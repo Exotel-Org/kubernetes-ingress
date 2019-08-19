@@ -2,9 +2,12 @@ FROM nginx:1.17.3
 
 # forward nginx access and error logs to stdout and stderr of the ingress
 # controller process
-RUN ln -sf /proc/1/fd/1 /var/log/nginx/access.log \
-	&& ln -sf /proc/1/fd/1 /var/log/nginx/stream-access.log \
-	&& ln -sf /proc/1/fd/2 /var/log/nginx/error.log
+RUN mkdir -p /etc/nginx/run/log/ \
+	&& addgroup --system --gid 101 nginx \
+    && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid 101 nginx \
+	&& ln -sf /proc/1/fd/1 /etc/nginx/run/log/nginx/access.log \
+	&& ln -sf /proc/1/fd/1 /etc/nginx/run/nginx/stream-access.log \
+	&& ln -sf /proc/1/fd/2 /etc/nginx/run/nginx/error.log
 
 COPY nginx-ingress internal/configs/version1/nginx.ingress.tmpl internal/configs/version1/nginx.tmpl internal/configs/version2/nginx.virtualserver.tmpl /
 
