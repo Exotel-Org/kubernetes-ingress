@@ -147,7 +147,7 @@ http {
     include /etc/nginx/conf.d/*.conf;
 
     server {
-        listen unix:/var/run/nginx-502-server.sock;
+        listen unix:/etc/nginx/run/nginx-502-server.sock;
         access_log off;
 
         {{if .OpenTracingEnabled}}
