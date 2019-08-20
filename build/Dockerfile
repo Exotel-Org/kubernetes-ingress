@@ -7,7 +7,10 @@ RUN mkdir -p /etc/nginx/run/log/nginx \
     && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid 101 nginx \
 	&& ln -sf /proc/1/fd/1 /etc/nginx/run/log/nginx/access.log \
 	&& ln -sf /proc/1/fd/1 /etc/nginx/run/log/nginx/stream-access.log \
-	&& ln -sf /proc/1/fd/2 /etc/nginx/run/log/nginx/error.log
+	&& ln -sf /proc/1/fd/2 /etc/nginx/run/log/nginx/error.log \
+	&& apt-get update \
+	&& apt-get install -y libcap2-bin \
+	&& setcap 'cap_net_bind_service=ep' /usr/sbin/nginx 
 
 COPY nginx-ingress internal/configs/version1/nginx.ingress.tmpl internal/configs/version1/nginx.tmpl internal/configs/version2/nginx.virtualserver.tmpl /
 
