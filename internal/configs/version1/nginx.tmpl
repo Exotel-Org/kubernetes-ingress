@@ -9,7 +9,7 @@ worker_cpu_affinity {{.WorkerCPUAffinity}};{{end}}
 worker_shutdown_timeout {{.WorkerShutdownTimeout}};{{end}}
 daemon off;
 
-error_log   /etc/nginx/run/log/nginx/error.log {{.ErrorLogLevel}};
+error_log   /etc/nginx/log/error.log {{.ErrorLogLevel}};
 pid        /etc/nginx/run/nginx.pid;
 
 {{- if .OpenTracingLoadModule}}
@@ -45,7 +45,7 @@ http {
     {{if .AccessLogOff}}
     access_log off;
     {{else}}
-    access_log  /etc/nginx/run/log/nginx/access.log  main;
+    access_log  /etc/nginx/log/access.log  main;
     {{end}}
 
     sendfile        on;
@@ -169,7 +169,7 @@ stream {
                       '$session_time';
     {{- end}}
 
-    access_log  /etc/nginx/run/log/nginx/stream-access.log  stream-main;
+    access_log  /etc/nginx/log/stream-access.log  stream-main;
 
     {{range $value := .StreamSnippets}}
     {{$value}}{{end}}
