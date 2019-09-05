@@ -17,6 +17,9 @@ spec:
        #prometheus.io/port: "9113"
     spec:
       serviceAccountName: nginx-ingress
+      securityContext: 
+        allowPrivilageEscalation: false
+        runAsUser: 101
       containers:
       - image: nginx/nginx-ingress:edge
         imagePullPolicy: Always
