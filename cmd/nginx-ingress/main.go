@@ -344,7 +344,7 @@ func main() {
 
 	var plusClient *client.NginxClient
 	if *nginxPlus && !useFakeNginxManager {
-		httpClient := getSocketClient("/etc/nginx/run/nginx-plus-api.sock") //("/var/run/nginx-plus-api.sock")
+		httpClient := getSocketClient("/var/run/nginx-plus-api.sock")
 		plusClient, err = client.NewNginxClient(httpClient, "http://nginx-plus-api/api")
 		if err != nil {
 			glog.Fatalf("Failed to create NginxClient for Plus: %v", err)
@@ -356,7 +356,7 @@ func main() {
 		if *nginxPlus {
 			go metrics.RunPrometheusListenerForNginxPlus(*prometheusMetricsListenPort, plusClient, registry)
 		} else {
-			httpClient := getSocketClient("/etc/nginx/run/nginx-status.sock") //("/var/run/nginx-status.sock")
+			httpClient := getSocketClient("/var/run/nginx-status.sock")
 			client, err := metrics.NewNginxMetricsClient(httpClient)
 			if err != nil {
 				glog.Fatalf("Error creating the Nginx client for Prometheus metrics: %v", err)
